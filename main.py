@@ -44,13 +44,20 @@ with mp_hands.Hands(
             mp_drawing_styles.get_default_hand_connections_style())
         
         # 손 위치 가져오기
-        fingLoc_4 = hand_landmarks.landmark[4] # 엄지
-        fingLoc_8 = hand_landmarks.landmark[8] # 검지
-        fingLoc_12 = hand_landmarks.landmark[12] # 중지
-        fingLoc_16 = hand_landmarks.landmark[16] # 약지
-        fingLoc_20  = hand_landmarks.landmark[20] # 새끼
-        print(fingLoc_4.z * 1000)
-        if(fingLoc_4.z * 1000 > -100):
+        fingLocs = [hand_landmarks.landmark[4], hand_landmarks.landmark[8],hand_landmarks.landmark[12],hand_landmarks.landmark[16],hand_landmarks.landmark[20]]
+        for i in range(len(fingLocs)):
+          fingLocs[i].x *= 10
+          fingLocs[i].y *= 10
+          fingLocs[i].z *= 10
+        
+        print("x : ", fingLocs[1].x * 10)
+        print("y : ", fingLocs[1].y * 10)
+        print("z : ", fingLocs[1].z * 10)
+
+
+        for i in range(len(fingLocs)): # z : 50
+          if(fingLocs[i].z <= -40 and fingLocs[i].y >= 70):
+            print("재생dddsa")
             playsound(sound_FullPath[0])
 
         break
@@ -59,7 +66,7 @@ with mp_hands.Hands(
     image[500-h:500, 0:w] = piano
 
     cv2.imshow('HandMouse', cv2.flip(image, 1))
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(500) & 0xFF == ord('q'):
         break
 cap.release()
 
